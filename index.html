@@ -38,10 +38,12 @@ box-sizing:border-box;
 </style>
 </head>
 <body>
-<h1 id="year">2026</h1>
+<h1 id="year"></h1>
 <div id="c"></div>
 <script>
 const y=new Date().getFullYear();
+document.getElementById("year").textContent = y;
+
 const now=new Date();
 now.setHours(0,0,0,0);
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
