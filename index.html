@@ -1,110 +1,75 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#fafafa;
-    color:#222;
-    padding:10px;
-}
-
-h1{
-    text-align:center;
-    font-size:22px;
-    margin-bottom:4px;
-}
-
-#subtitle{
-    text-align:center;
-    color:#666;
-    font-size:12px;
-    margin-bottom:10px;
-}
-
-#calendar{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(220px,1fr));
-    gap:10px;
-    max-width:720px;
-    margin:auto;
-}
-
-.month{
-    background:white;
-    border:1px solid #e8e8e8;
-    border-radius:10px;
-    padding:8px;
-    box-shadow:0 1px 4px rgba(0,0,0,.05);
-}
-
-.month h2{
-    font-size:14px;
-    text-align:center;
-    margin-bottom:6px;
-}
-
-.weekdays{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:2px;
-    margin-bottom:3px;
-}
-
-.weekdays div{
-    text-align:center;
-    font-size:9px;
-    color:#888;
-    font-weight:600;
-}
-
-.days{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:2px;
-}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=650,initial-scale=1">
+<title>Year Calendar</title>
+<style>
+html,body{margin:0;padding:0;background:#fafafa;font-family:Arial,sans-serif}
+body{width:650px;height:450px;overflow:hidden}
+#c{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px}
+.m{background:#fff;border:1px solid #ddd;border-radius:4px;padding:3px}
+.m h3{margin:0 0 2px;text-align:center;font-size:10px}
+.w,.d{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
+.w div{font-size:6px;text-align:center;color:#666;padding-bottom:1px;font-weight:700}
 .day{
-    aspect-ratio:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:5px;
-    border:1px solid #e6e6e6;
-    background:white;
-    font-size:9px;
+aspect-ratio:1/1;
+display:flex;
+justify-content:center;
+align-items:center;
+border:1px solid #d9d9d9;
+border-radius:0;
+font-size:9px;
+font-weight:700;
+color:#222;
+box-sizing:border-box;
 }
-
-.blank{
-    visibility:hidden;
-}
-
-.past{
-    background:#22c55e;
-    color:white;
-    border:none;
-}
-
-.today{
-    background:#fde68a;
-    border:2px solid #f59e0b;
-    font-weight:700;
-}
-
-.future{
-    background:white;
-}
-
-@media(max-width:800px){
-    #calendar{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:500px){
-    #calendar{
-        grid-template-columns:1fr;
-    }
-}
+.blank{visibility:hidden}
+.past{background:#16a34a;color:#fff;border-color:#16a34a}
+.future{background:#fde047;color:#222;border-color:#d9d9d9}
+.today{background:#d97706;color:#fff;border:2px solid #92400e;font-weight:700}
+</style>
+</head>
+<body>
+<div id="c"></div>
+<script>
+const y=new Date().getFullYear();
+const now=new Date();
+now.setHours(0,0,0,0);
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const wd=["S","M","T","W","TH","F","S"];
+const c=document.getElementById("c");
+months.forEach((name,mi)=>{
+ const m=document.createElement("div");
+ m.className="m";
+ m.innerHTML=`<h3>${name}</h3>`;
+ const w=document.createElement("div");
+ w.className="w";
+ wd.forEach(x=>{const e=document.createElement("div");e.textContent=x;w.appendChild(e);});
+ m.appendChild(w);
+ const d=document.createElement("div");
+ d.className="d";
+ const first=new Date(y,mi,1).getDay();
+ const days=new Date(y,mi+1,0).getDate();
+ for(let i=0;i<42;i++){
+   const cell=document.createElement("div");
+   cell.className="day";
+   if(i<first||i>=first+days){
+      cell.classList.add("blank");
+   }else{
+      const num=i-first+1;
+      cell.textContent=num;
+      const cur=new Date(y,mi,num);
+      cur.setHours(0,0,0,0);
+      if(cur<now) cell.classList.add("past");
+      else if(cur.getTime()===now.getTime()) cell.classList.add("today");
+      else cell.classList.add("future");
+   }
+   d.appendChild(cell);
+ }
+ m.appendChild(d);
+ c.appendChild(m);
+});
+</script>
+</body>
+</html>
