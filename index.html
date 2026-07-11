@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Year Calendar</title>
-
-<style>
-
 *{
     margin:0;
     padding:0;
@@ -16,359 +5,106 @@
 }
 
 body{
-
-    font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     background:#fafafa;
     color:#222;
-
-    padding:28px;
-
+    padding:10px;
 }
 
 h1{
-
     text-align:center;
-    font-size:34px;
-    margin-bottom:6px;
-
+    font-size:22px;
+    margin-bottom:4px;
 }
 
 #subtitle{
-
     text-align:center;
     color:#666;
-    margin-bottom:28px;
-
+    font-size:12px;
+    margin-bottom:10px;
 }
 
 #calendar{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(3,minmax(320px,1fr));
-
-    gap:26px;
-
-    max-width:1250px;
+    grid-template-columns:repeat(3,minmax(220px,1fr));
+    gap:10px;
+    max-width:720px;
     margin:auto;
-
 }
 
 .month{
-
     background:white;
-
     border:1px solid #e8e8e8;
-
-    border-radius:16px;
-
-    padding:16px;
-
-    box-shadow:
-    0 2px 10px rgba(0,0,0,.04);
-
+    border-radius:10px;
+    padding:8px;
+    box-shadow:0 1px 4px rgba(0,0,0,.05);
 }
 
 .month h2{
-
-    font-size:18px;
-
-    margin-bottom:12px;
-
+    font-size:14px;
     text-align:center;
-
+    margin-bottom:6px;
 }
 
 .weekdays{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(7,1fr);
-
-    gap:4px;
-
-    margin-bottom:6px;
-
+    grid-template-columns:repeat(7,1fr);
+    gap:2px;
+    margin-bottom:3px;
 }
 
 .weekdays div{
-
     text-align:center;
-
-    font-size:12px;
-
+    font-size:9px;
     color:#888;
-
     font-weight:600;
-
 }
 
 .days{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(7,1fr);
-
-    gap:4px;
-
+    grid-template-columns:repeat(7,1fr);
+    gap:2px;
 }
 
 .day{
-
     aspect-ratio:1;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-    border-radius:8px;
-
+    border-radius:5px;
     border:1px solid #e6e6e6;
-
     background:white;
-
-    font-size:13px;
-
-    transition:.15s;
-
+    font-size:9px;
 }
 
 .blank{
-
     visibility:hidden;
-
 }
 
 .past{
-
     background:#22c55e;
     color:white;
     border:none;
-
 }
 
 .today{
-
     background:#fde68a;
-    color:#111;
-
-    font-weight:700;
-
     border:2px solid #f59e0b;
-
+    font-weight:700;
 }
 
 .future{
-
     background:white;
-
 }
 
-@media(max-width:1100px){
-
-#calendar{
-
-grid-template-columns:
-repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:720px){
-
-#calendar{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h1 id="year"></h1>
-
-<div id="subtitle"></div>
-
-<div id="calendar"></div>
-
-<script>
-
-const now=new Date();
-
-const year=now.getFullYear();
-
-document.getElementById("year").textContent=year;
-
-const start=new Date(year,0,1);
-
-const end=new Date(year,11,31);
-
-const passed=Math.floor(
-(now-start)/(1000*60*60*24)
-)+1;
-
-const total=Math.floor(
-(end-start)/(1000*60*60*24)
-)+1;
-
-document.getElementById("subtitle").textContent=
-passed+" / "+total+" days completed";
-
-const months=[
-"January",
-"February",
-"March",
-"April",
-"May",
-"June",
-"July",
-"August",
-"September",
-"October",
-"November",
-"December"
-];
-
-const weekdays=[
-"Sun",
-"Mon",
-"Tue",
-"Wed",
-"Thu",
-"Fri",
-"Sat"
-];
-
-const calendar=document.getElementById("calendar");
-months.forEach((monthName, monthIndex)=>{
-
-    const month=document.createElement("div");
-    month.className="month";
-
-    const title=document.createElement("h2");
-    title.textContent=monthName;
-    month.appendChild(title);
-
-    const weekdayRow=document.createElement("div");
-    weekdayRow.className="weekdays";
-
-    weekdays.forEach(day=>{
-        const d=document.createElement("div");
-        d.textContent=day;
-        weekdayRow.appendChild(d);
-    });
-
-    month.appendChild(weekdayRow);
-
-    const daysGrid=document.createElement("div");
-    daysGrid.className="days";
-
-    const firstDay=new Date(year,monthIndex,1).getDay();
-    const daysInMonth=new Date(year,monthIndex+1,0).getDate();
-
-    for(let i=0;i<firstDay;i++){
-
-        const blank=document.createElement("div");
-        blank.className="day blank";
-        daysGrid.appendChild(blank);
-
+@media(max-width:800px){
+    #calendar{
+        grid-template-columns:repeat(2,1fr);
     }
+}
 
-    for(let day=1;day<=daysInMonth;day++){
-
-        const cell=document.createElement("div");
-
-        cell.className="day";
-
-        cell.textContent=day;
-
-        const current=new Date(year,monthIndex,day);
-
-        current.setHours(0,0,0,0);
-
-        const today=new Date(now);
-        today.setHours(0,0,0,0);
-
-        if(current.getTime()<today.getTime()){
-
-            cell.classList.add("past");
-
-        }
-        else if(current.getTime()===today.getTime()){
-
-            cell.classList.add("today");
-
-        }
-        else{
-
-            cell.classList.add("future");
-
-        }
-
-        cell.title=current.toDateString();
-
-        daysGrid.appendChild(cell);
-
+@media(max-width:500px){
+    #calendar{
+        grid-template-columns:1fr;
     }
-
-    while(daysGrid.children.length%7!==0){
-
-        const blank=document.createElement("div");
-        blank.className="day blank";
-        daysGrid.appendChild(blank);
-
-    }
-
-    month.appendChild(daysGrid);
-
-    calendar.appendChild(month);
-
-});
-document.querySelectorAll(".day:not(.blank)").forEach(cell=>{
-
-    cell.addEventListener("mouseenter",()=>{
-
-        if(
-            !cell.classList.contains("past") &&
-            !cell.classList.contains("today")
-        ){
-            cell.style.background="#f5f5f5";
-        }
-
-    });
-
-    cell.addEventListener("mouseleave",()=>{
-
-        if(
-            !cell.classList.contains("past") &&
-            !cell.classList.contains("today")
-        ){
-            cell.style.background="white";
-        }
-
-    });
-
-});
-
-</script>
-
-</body>
-</html>
+}
